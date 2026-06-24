@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Кабинет - Пассажирам.РФ</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body onload="loadCabinet()">
+    <div id="app-container">
+      <nav>
+        <div class="brand"><i class="fa-solid fa-bus"></i> Пассажирам.РФ</div>
+        <div class="nav-links">
+          <a href="cabinet.html" class="active">Кабинет</a>
+          <a href="admin.html">Админ</a>
+          <a
+            href="../../index.html"
+            onclick="localStorage.removeItem('currentUserId')"
+            >Выход</a
+          >
+        </div>
+      </nav>
+
+      <div class="page-container">
+        <div
+          class="d-flex justify-between align-center"
+          style="margin-bottom: 10px"
+        >
+          <h2>Личный кабинет</h2>
+          <span id="user-info" class="helper-text"
+            ><i
+              class="fa-regular fa-circle-check"
+              style="color: var(--success)"
+            ></i>
+            Загрузка...</span
+          >
+        </div>
+
+        <!-- Слайдер (путь к картинкам: ../images/) -->
+        <div class="slider-container">
+          <div class="slides" id="cabinet-slider">
+            <div
+              class="slide"
+              style="background-image: url(&quot;../images/slide1.jpg&quot;)"
+            ></div>
+            <div
+              class="slide"
+              style="background-image: url(&quot;../images/slide2.jpg&quot;)"
+            ></div>
+            <div
+              class="slide"
+              style="background-image: url(&quot;../images/slide3.jpg&quot;)"
+            ></div>
+            <div
+              class="slide"
+              style="background-image: url(&quot;../images/slide4.jpg&quot;)"
+            ></div>
+          </div>
+          <button class="slider-btn prev" onclick="moveSlide(-1)">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="slider-btn next" onclick="moveSlide(1)">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div
+          class="d-flex justify-between align-center"
+          style="margin-bottom: 15px"
+        >
+          <h3>
+            <i
+              class="fa-regular fa-rectangle-list"
+              style="color: var(--blue); margin-right: 8px"
+            ></i>
+            Мои заявки
+          </h3>
+          <a
+            href="request.html"
+            class="btn btn-secondary"
+            style="
+              width: auto;
+              padding: 8px 20px;
+              font-size: 14px;
+              text-decoration: none;
+              border-radius: 30px;
+            "
+          >
+            <i class="fa-solid fa-plus"></i> Новая
+          </a>
+        </div>
+
+        <div id="user-requests-list">
+          <p class="helper-text">
+            <i class="fa-regular fa-hourglass-half"></i> Загрузка...
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="../script.js"></script>
+  </body>
+</html>

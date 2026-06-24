@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Пассажирам.РФ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <i class="fa-solid fa-bus"></i>
+                <span>Пассажирам.РФ</span>
+            </div>
+            <nav class="nav-links">
+                <a href="admin.html" class="active">Управление</a>
+                <a href="#" onclick="logout(); return false;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Выход
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container page">
+        <div class="admin-header animate-fade-in">
+            <h1><i class="fa-solid fa-shield-halved"></i> Панель администратора</h1>
+            <p class="text-muted">Управление пользователями и курсами</p>
+        </div>
+
+        <!-- Статистика -->
+        <div class="admin-stats">
+            <div class="admin-stat-card animate-slide-up" style="animation-delay: 0.1s">
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="total-users">0</span>
+                    <span class="stat-label">Пользователей</span>
+                </div>
+            </div>
+            <div class="admin-stat-card animate-slide-up" style="animation-delay: 0.2s">
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number" id="total-students">0</span>
+                    <span class="stat-label">Студентов</span>
+                </div>
+            </div>
+            <div class="admin-stat-card animate-slide-up" style="animation-delay: 0.3s">
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Курсов</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Фильтры -->
+        <div class="admin-filters animate-fade-in">
+            <div class="search-box">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="search-user" placeholder="Поиск по логину или ФИО..." oninput="renderUsers()">
+            </div>
+            <select id="filter-role" onchange="renderUsers()">
+                <option value="">Все роли</option>
+                <option value="student">Студенты</option>
+                <option value="admin">Админы</option>
+            </select>
+        </div>
+
+        <!-- Список пользователей -->
+        <div class="users-list" id="users-list"></div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+        <div class="modal" style="position:relative;">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-top-bar" id="modal-bar"></div>
+            <div class="modal-body">
+                <div class="modal-icon" id="modal-icon"></div>
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-text" id="modal-text"></div>
+                <div class="modal-actions" id="modal-actions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser.role !== 'admin') {
+                showModal({
+                    type: 'error',
+                    title: 'Доступ запрещён',
+                    text: 'У вас нет прав для просмотра этой страницы',
+                    onConfirm: () => {
+                        window.location.href = '../../index.html';
+                    }
+                });
+                return;
+            }
+            renderUsers();
+            updateStats();
+        });
+
+        function updateStats() {
+            const users = getUsers();
+            document.getElementById('total-users').textContent = users.length;
+            document.getElementById('total-students').textContent = users.filter(u => u.role === 'student').length;
+        }
+
+        function renderUsers() {
+            const users = getUsers();
+            const search = document.getElementById('search-user').value.toLowerCase();
+            const roleFilter = document.getElementById('filter-role').value;
+
+            const filtered = users.filter(u => {
+                const matchSearch = u.username.toLowerCase().includes(search) || 
+                                   (u.fullName && u.fullName.toLowerCase().includes(search));
+                const matchRole = !roleFilter || u.role === roleFilter;
+                return matchSearch && matchRole;
+            });
+
+            const list = document.getElementById('users-list');
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state animate-fade-in"><i class="fa-solid fa-inbox"></i><p>Пользователи не найдены</p></div>';
+                return;
+            }
+
+            list.innerHTML = '<div class="users-grid">' + filtered.map(u => `
+                <div class="user-card animate-slide-up">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h4>${u.fullName || u.username}</h4>
+                        <p class="text-muted">@${u.username}</p>
+                        <div class="user-meta">
+                            <span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-student'}">
+                                ${u.role === 'admin' ? 'Администратор' : 'Студент'}
+                            </span>
+                            <span class="user-date"><i class="fa-solid fa-calendar"></i> ${new Date(u.createdAt).toLocaleDateString('ru-RU')}</span>
+                        </div>
+                    </div>
+                    ${u.role !== 'admin' ? `
+                        <button class="btn btn-sm btn-danger-outline" onclick="deleteUser('${u.username}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    ` : '<span class="badge badge-protected"><i class="fa-solid fa-shield"></i> Защищён</span>'}
+                </div>
+            `).join('') + '</div>';
+        }
+
+        function deleteUser(username) {
+            showModal({
+                type: 'confirm',
+                title: 'Удалить пользователя?',
+                text: `Вы уверены, что хотите удалить "${username}"? Это действие нельзя отменить.`,
+                confirmText: 'Удалить',
+                cancelText: 'Отмена',
+                onConfirm: () => {
+                    let users = getUsers();
+                    users = users.filter(u => u.username !== username);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    renderUsers();
+                    updateStats();
+                    showModal({
+                        type: 'success',
+                        title: 'Удалено',
+                        text: 'Пользователь успешно удалён'
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

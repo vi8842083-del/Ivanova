@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Пассажирам.РФ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="auth-page">
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <i class="fa-solid fa-bus"></i>
+                <span>Пассажирам.РФ</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Вход</a>
+                <a href="assets/pages/register.html">Регистрация</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="auth-center">
+        <div class="auth-card animate-fade-in">
+            <div class="auth-illustration">
+                <img src="./assets/img/2-9.jpg" alt="Bus" class="auth-image">
+                <div class="auth-overlay"></div>
+                <div class="auth-badge">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Обучение онлайн</span>
+                </div>
+            </div>
+
+            <div class="auth-body">
+                <div class="auth-header">
+                    <h1>С возвращением!</h1>
+                    <p class="text-muted">Войдите для продолжения обучения</p>
+                </div>
+
+                <form id="login-form" onsubmit="event.preventDefault(); loginUser();">
+                    <div class="form-group">
+                        <label for="login-username">
+                            <i class="fa-solid fa-user"></i> Логин
+                        </label>
+                        <input type="text" id="login-username" class="form-control" placeholder="Введите логин" autocomplete="username">
+                        <span id="login-user-error" class="error-text hidden"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">
+                            <i class="fa-solid fa-lock"></i> Пароль
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="login-password" class="form-control" placeholder="Введите пароль" autocomplete="current-password">
+                            <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <span id="login-pass-error" class="error-text hidden"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-primary animate-pulse-hover">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Войти
+                    </button>
+                </form>
+
+                <div class="auth-divider">
+                    <span>или</span>
+                </div>
+
+                <a href="assets/pages/register.html" class="btn btn-block btn-outline animate-pulse-hover">
+                    <i class="fa-solid fa-user-plus"></i> Создать аккаунт
+                </a>
+            </div>
+        </div>
+
+        <div class="auth-features">
+            <div class="feature-item animate-slide-up" style="animation-delay: 0.1s">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <h3>Онлайн-курсы</h3>
+                <p>Доступ с любого устройства</p>
+            </div>
+            <div class="feature-item animate-slide-up" style="animation-delay: 0.3s">
+                <div class="feature-icon">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <h3>Поддержка 24/7</h3>
+                <p>Всегда на связи</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+        <div class="modal" style="position:relative;">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-top-bar" id="modal-bar"></div>
+            <div class="modal-body">
+                <div class="modal-icon" id="modal-icon"></div>
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-text" id="modal-text"></div>
+                <div class="modal-actions" id="modal-actions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>

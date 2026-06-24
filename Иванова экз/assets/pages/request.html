@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новая заявка - Пассажирам.РФ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <i class="fa-solid fa-bus"></i>
+                <span>Пассажирам.РФ</span>
+            </div>
+            <nav class="nav-links">
+                <a href="dashboard.html">Мои курсы</a>
+                <a href="#" onclick="logout(); return false;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Выход
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container page">
+        <div class="auth-center">
+            <div class="auth-card animate-fade-in">
+                <div class="auth-illustration">
+                    <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=400&h=200&fit=crop" alt="Request" class="auth-image">
+                    <div class="auth-overlay"></div>
+                    <div class="auth-badge">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Новая заявка</span>
+                    </div>
+                </div>
+
+                <div class="auth-body">
+                    <div class="auth-header">
+                        <h1>Оформление заявки</h1>
+                        <p class="text-muted">Заполните форму для начала обучения</p>
+                    </div>
+
+                    <form id="request-form" onsubmit="event.preventDefault(); submitRequest();">
+                        <div class="form-group">
+                            <label for="req-transport">
+                                <i class="fa-solid fa-bus"></i> Вид транспорта
+                            </label>
+                            <select id="req-transport" class="form-control">
+                                <option value="Автобус">Автобус</option>
+                                <option value="Электробус">Электробус</option>
+                                <option value="Трамвай">Трамвай</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="req-date">
+                                <i class="fa-solid fa-calendar"></i> Дата начала обучения
+                            </label>
+                            <input type="date" id="req-date" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="req-payment">
+                                <i class="fa-solid fa-credit-card"></i> Способ оплаты
+                            </label>
+                            <select id="req-payment" class="form-control">
+                                <option value="Предоплата по QR-коду">Предоплата по QR-коду</option>
+                                <option value="Оплата картой МИР">Оплата картой МИР</option>
+                                <option value="Постоплата в офисе">Постоплата в офисе</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-block btn-primary animate-pulse-hover">
+                            <i class="fa-solid fa-paper-plane"></i> Отправить заявку
+                        </button>
+                    </form>
+
+                    <div class="auth-divider">
+                        <span>или</span>
+                    </div>
+
+                    <a href="dashboard.html" class="btn btn-block btn-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Вернуться в кабинет
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../script.js"></script>
+</body>
+</html>
