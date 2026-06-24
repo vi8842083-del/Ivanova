@@ -1,305 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет - Пассажирам.РФ</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <link rel="stylesheet" href="../style.css" />
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
     <header class="header">
-      <div class="header-inner">
-        <div class="logo">
-          <i class="fa-solid fa-bus"></i>
-          <span>Пассажирам.РФ</span>
+        <div class="header-inner">
+            <div class="logo">
+                <i class="fa-solid fa-bus"></i>
+                <span>Пассажирам.РФ</span>
+            </div>
+            <nav class="nav-links">
+                <a href="dashboard.html" class="active">Мои курсы</a>
+                <a href="request.html">Новая заявка</a>
+                <a href="#" onclick="logout(); return false;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Выход
+                </a>
+            </nav>
         </div>
-        <nav class="nav-links">
-          <a href="dashboard.html" class="active">Мои курсы</a>
-          <a
-            href="#"
-            onclick="
-              logout();
-              return false;
-            "
-          >
-            <i class="fa-solid fa-right-from-bracket"></i> Выход
-          </a>
-        </nav>
-      </div>
     </header>
 
     <div class="container page">
-      <!-- Приветствие -->
-      <div class="welcome-section animate-fade-in">
-        <div class="welcome-content">
-          <h1>Добро пожаловать, <span id="user-name">Студент</span>! 👋</h1>
-          <p class="text-muted">Продолжите обучение или начните новый курс</p>
-        </div>
-        <div class="welcome-stats">
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fa-solid fa-book-open"></i>
+        <!-- Приветствие -->
+        <div class="welcome-section animate-fade-in">
+            <div class="welcome-content">
+                <h1>Добро пожаловать, <span id="user-name">Студент</span>! 👋</h1>
+                <p class="text-muted">Продолжите обучение или оформите новую заявку</p>
             </div>
-            <div class="stat-info">
-              <span class="stat-number" id="total-courses">3</span>
-              <span class="stat-label">Курсов</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fa-solid fa-check-circle"></i>
-            </div>
-            <div class="stat-info">
-              <span class="stat-number" id="completed-courses">1</span>
-              <span class="stat-label">Завершено</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fa-solid fa-clock"></i>
-            </div>
-            <div class="stat-info">
-              <span class="stat-number" id="hours-learned">12</span>
-              <span class="stat-label">Часов обучения</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Избранное -->
-      <section class="section">
-        <div class="section-header">
-          <h2>
-            <i class="fa-solid fa-star" style="color: #fbbf24"></i> Продолжить
-            обучение
-          </h2>
-          <a href="#" class="link"
-            >Все курсы <i class="fa-solid fa-arrow-right"></i
-          ></a>
-        </div>
-
-        <div class="courses-grid">
-          <div
-            class="course-card animate-slide-up"
-            style="animation-delay: 0.1s"
-          >
-            <div class="course-image">
-              <img
-                src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400&h=250&fit=crop"
-                alt="Course"
-              />
-              <div class="course-badge">В процессе</div>
-              <div class="course-overlay">
-                <button
-                  class="btn btn-sm btn-primary"
-                  onclick="continueCourse(1)"
-                >
-                  <i class="fa-solid fa-play"></i> Продолжить
-                </button>
-              </div>
-            </div>
-            <div class="course-content">
-              <h3>Маршруты города</h3>
-              <p class="text-muted">Изучите основные маршруты и остановки</p>
-              <div class="course-progress">
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 65%"></div>
+            <div class="welcome-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="total-requests">0</span>
+                        <span class="stat-label">Заявок</span>
+                    </div>
                 </div>
-                <span class="progress-text">65%</span>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="course-card animate-slide-up"
-            style="animation-delay: 0.2s"
-          >
-            <div class="course-image">
-              <img
-                src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=250&fit=crop"
-                alt="Course"
-              />
-              <div class="course-badge new">Новый</div>
-              <div class="course-overlay">
-                <button class="btn btn-sm btn-primary" onclick="startCourse(2)">
-                  <i class="fa-solid fa-play"></i> Начать
-                </button>
-              </div>
-            </div>
-            <div class="course-content">
-              <h3>Безопасность на дороге</h3>
-              <p class="text-muted">Правила безопасности для пассажиров</p>
-              <div class="course-progress">
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 0%"></div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-spinner"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="active-requests">0</span>
+                        <span class="stat-label">В работе</span>
+                    </div>
                 </div>
-                <span class="progress-text">0%</span>
-              </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="completed-requests">0</span>
+                        <span class="stat-label">Завершено</span>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Все курсы -->
-      <section class="section">
-        <div class="section-header">
-          <h2>
-            <i class="fa-solid fa-graduation-cap" style="color: #3b82f6"></i>
-            Все курсы
-          </h2>
         </div>
 
-        <div class="courses-grid">
-          <div
-            class="course-card animate-slide-up"
-            style="animation-delay: 0.3s"
-          >
-            <div class="course-image">
-              <img
-                src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=400&h=250&fit=crop"
-                alt="Course"
-              />
-              <div class="course-badge completed">Завершён</div>
+        <!-- Мои заявки -->
+        <section class="section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-clipboard-list" style="color: #3b82f6"></i> Мои заявки</h2>
+                <a href="request.html" class="link">
+                    <i class="fa-solid fa-plus"></i> Создать заявку
+                </a>
             </div>
-            <div class="course-content">
-              <h3>Основы безопасности</h3>
-              <p class="text-muted">Правила поведения в транспорте</p>
-              <div class="course-footer">
-                <span class="course-duration"
-                  ><i class="fa-solid fa-clock"></i> 4 часа</span
-                >
-                <button
-                  class="btn btn-sm btn-outline"
-                  onclick="viewCertificate(1)"
-                >
-                  <i class="fa-solid fa-certificate"></i> Сертификат
-                </button>
-              </div>
-            </div>
-          </div>
+            <div id="my-requests-list"></div>
+        </section>
 
-          <div
-            class="course-card animate-slide-up"
-            style="animation-delay: 0.4s"
-          >
-            <div class="course-image">
-              <img
-                src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=250&fit=crop"
-                alt="Course"
-              />
-              <div class="course-badge new">Новый</div>
+        <!-- Курсы -->
+        <section class="section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-graduation-cap" style="color: #8b5cf6"></i> Доступные курсы</h2>
             </div>
-            <div class="course-content">
-              <h3>Оплата проезда</h3>
-              <p class="text-muted">Способы оплаты и льготы</p>
-              <div class="course-footer">
-                <span class="course-duration"
-                  ><i class="fa-solid fa-clock"></i> 2 часа</span
-                >
-                <button class="btn btn-sm btn-primary" onclick="startCourse(3)">
-                  <i class="fa-solid fa-play"></i> Начать
-                </button>
-              </div>
-            </div>
-          </div>
 
-          <div
-            class="course-card animate-slide-up"
-            style="animation-delay: 0.5s"
-          >
-            <div class="course-image">
-              <img
-                src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=250&fit=crop"
-                alt="Course"
-              />
-              <div class="course-badge">Скоро</div>
+            <div class="courses-grid">
+                <div class="course-card animate-slide-up" style="animation-delay: 0.1s">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=400&h=250&fit=crop" alt="Course">
+                        <div class="course-badge new">Популярный</div>
+                    </div>
+                    <div class="course-content">
+                        <h3>Основы безопасности</h3>
+                        <p class="text-muted">Правила поведения в транспорте</p>
+                        <div class="course-footer">
+                            <span class="course-duration"><i class="fa-solid fa-clock"></i> 4 часа</span>
+                            <button class="btn btn-sm btn-primary" onclick="startCourse(1)">
+                                <i class="fa-solid fa-play"></i> Начать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card animate-slide-up" style="animation-delay: 0.2s">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=250&fit=crop" alt="Course">
+                        <div class="course-badge new">Новый</div>
+                    </div>
+                    <div class="course-content">
+                        <h3>Оплата проезда</h3>
+                        <p class="text-muted">Способы оплаты и льготы</p>
+                        <div class="course-footer">
+                            <span class="course-duration"><i class="fa-solid fa-clock"></i> 2 часа</span>
+                            <button class="btn btn-sm btn-primary" onclick="startCourse(2)">
+                                <i class="fa-solid fa-play"></i> Начать
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="course-content">
-              <h3>Этикет в транспорте</h3>
-              <p class="text-muted">Правила хорошего тона</p>
-              <div class="course-footer">
-                <span class="course-duration"
-                  ><i class="fa-solid fa-clock"></i> 3 часа</span
-                >
-                <button class="btn btn-sm btn-secondary" disabled>
-                  <i class="fa-solid fa-lock"></i> Скоро
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
     </div>
 
     <!-- Модальное окно -->
-    <div
-      class="modal-overlay"
-      id="modal-overlay"
-      onclick="closeModalOutside(event)"
-    >
-      <div class="modal" style="position: relative">
-        <button class="modal-close" onclick="closeModal()">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div class="modal-top-bar" id="modal-bar"></div>
-        <div class="modal-body">
-          <div class="modal-icon" id="modal-icon"></div>
-          <div class="modal-title" id="modal-title"></div>
-          <div class="modal-text" id="modal-text"></div>
-          <div class="modal-actions" id="modal-actions"></div>
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+        <div class="modal" style="position:relative;">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-top-bar" id="modal-bar"></div>
+            <div class="modal-body">
+                <div class="modal-icon" id="modal-icon"></div>
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-text" id="modal-text"></div>
+                <div class="modal-actions" id="modal-actions"></div>
+            </div>
         </div>
-      </div>
     </div>
 
     <script src="../script.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const currentUser = JSON.parse(
-          localStorage.getItem("currentUser") || "{}",
-        );
-        if (currentUser.username) {
-          document.getElementById("user-name").textContent =
-            currentUser.fullName || currentUser.username;
-        } else {
-          window.location.href = "../../index.html";
-        }
-      });
-
-      function continueCourse(id) {
-        showModal({
-          type: "info",
-          title: "Продолжить обучение",
-          text: "Загружаем курс...",
-          onConfirm: () => {},
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!currentUser.username) {
+                window.location.href = '../../index.html';
+                return;
+            }
+            document.getElementById('user-name').textContent = currentUser.fullName || currentUser.username;
+            renderMyRequests();
         });
-      }
-
-      function startCourse(id) {
-        showModal({
-          type: "success",
-          title: "Курс начат!",
-          text: "Желаем успехов в обучении!",
-          onConfirm: () => {},
-        });
-      }
-
-      function viewCertificate(id) {
-        showModal({
-          type: "success",
-          title: "Сертификат",
-          text: "Поздравляем! Вы успешно завершили курс.",
-          confirmText: "Скачать",
-          onConfirm: () => {},
-        });
-      }
     </script>
-  </body>
+</body>
 </html>
