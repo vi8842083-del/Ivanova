@@ -1,129 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Личный кабинет - Пассажирам.РФ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
     <header class="header">
-        <div class="header-inner">
-            <div class="logo">
-                <span>Пассажирам.РФ</span>
-            </div>
-            <nav class="nav-links">
-                <a href="dashboard.html" class="active">Мои курсы</a>
-                <a href="request.html">Новая заявка</a>
-                <a href="#" onclick="logout(); return false;">Выход</a>
-            </nav>
+      <div class="header-inner">
+        <div class="logo">
+          <span>Пассажирам.РФ</span>
         </div>
+        <nav class="nav-links">
+          <a href="dashboard.html" class="active">Мои курсы</a>
+          <a href="request.html">Новая заявка</a>
+          <a
+            href="#"
+            onclick="
+              logout();
+              return false;
+            "
+            >Выход</a
+          >
+        </nav>
+      </div>
     </header>
 
     <div class="container page">
-        <div class="welcome-section animate-fade-in">
-            <div class="welcome-content">
-                <h1>Добро пожаловать, <span id="user-name">Студент</span>!</h1>
-                <p class="text-muted">Продолжите обучение или оформите новую заявку</p>
+      <div class="welcome-section animate-fade-in">
+        <div class="welcome-content">
+          <h1>Добро пожаловать, <span id="user-name">Студент</span>!</h1>
+          <p class="text-muted">
+            Продолжите обучение или оформите новую заявку
+          </p>
+        </div>
+        <div class="welcome-stats">
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-number" id="total-requests">0</span>
+              <span class="stat-label">Заявок</span>
             </div>
-            <div class="welcome-stats">
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <span class="stat-number" id="total-requests">0</span>
-                        <span class="stat-label">Заявок</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <span class="stat-number" id="active-requests">0</span>
-                        <span class="stat-label">В работе</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-info">
-                        <span class="stat-number" id="completed-requests">0</span>
-                        <span class="stat-label">Завершено</span>
-                    </div>
-                </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-number" id="active-requests">0</span>
+              <span class="stat-label">В работе</span>
             </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-number" id="completed-requests">0</span>
+              <span class="stat-label">Завершено</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Мои заявки</h2>
+          <a href="request.html" class="link">+ Создать заявку</a>
+        </div>
+        <div id="my-requests-list"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Доступные курсы</h2>
         </div>
 
-        <section class="section">
-            <div class="section-header">
-                <h2>Мои заявки</h2>
-                <a href="request.html" class="link">+ Создать заявку</a>
+        <div class="courses-grid">
+          <!-- Курс 1 -->
+          <div
+            class="course-card animate-slide-up"
+            style="animation-delay: 0.1s"
+          >
+            <div class="course-image">
+              <img src="/assets/img/5.png" alt="Безопасность" class="course-image" />
+              <div class="course-badge new">Популярный</div>
             </div>
-            <div id="my-requests-list"></div>
-        </section>
-
-        <section class="section">
-            <div class="section-header">
-                <h2>Доступные курсы</h2>
+            <div class="course-content">
+              <h3>Основы безопасности</h3>
+              <p class="text-muted">Правила поведения в транспорте</p>
+              <div class="course-footer">
+                <span class="course-duration">4 часа</span>
+                <button class="btn btn-sm btn-primary" onclick="startCourse(1)">
+                  Начать
+                </button>
+              </div>
             </div>
+          </div>
 
-            <div class="courses-grid">
-                <div class="course-card animate-slide-up" style="animation-delay: 0.1s">
-                    <div class="course-image">
-                        <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=400&h=250&fit=crop" alt="Course">
-                        <div class="course-badge new">Популярный</div>
-                    </div>
-                    <div class="course-content">
-                        <h3>Основы безопасности</h3>
-                        <p class="text-muted">Правила поведения в транспорте</p>
-                        <div class="course-footer">
-                            <span class="course-duration">4 часа</span>
-                            <button class="btn btn-sm btn-primary" onclick="startCourse(1)">
-                                Начать
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-card animate-slide-up" style="animation-delay: 0.2s">
-                    <div class="course-image">
-                        <img src="/assets/img/3.jpg" alt="Course">
-                        <div class="course-badge new">Новый</div>
-                    </div>
-                    <div class="course-content">
-                        <h3>Оплата проезда</h3>
-                        <p class="text-muted">Способы оплаты и льготы</p>
-                        <div class="course-footer">
-                            <span class="course-duration">2 часа</span>
-                            <button class="btn btn-sm btn-primary" onclick="startCourse(2)">
-                                Начать
-                            </button>
-                        </div>
-                    </div>
-                </div>
+          <!-- Курс 2 -->
+          <div
+            class="course-card animate-slide-up"
+            style="animation-delay: 0.2s"
+          >
+            <div class="course-image">
+              <img src="/assets/img/6.jpg" alt="Оплата" class="course-image" />
+              <div class="course-badge new">Новый</div>
             </div>
-        </section>
+            <div class="course-content">
+              <h3>Оплата проезда</h3>
+              <p class="text-muted">Способы оплаты и льготы</p>
+              <div class="course-footer">
+                <span class="course-duration">2 часа</span>
+                <button class="btn btn-sm btn-primary" onclick="startCourse(2)">
+                  Начать
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Курс 3 -->
+          <div
+            class="course-card animate-slide-up"
+            style="animation-delay: 0.3s"
+          >
+            <div class="course-image">
+              <img src="/assets/img/4.jpg" alt="Маршруты" class="course-image" />
+              <div class="course-badge">Скоро</div>
+            </div>
+            <div class="course-content">
+              <h3>Маршруты города</h3>
+              <p class="text-muted">Изучите основные маршруты</p>
+              <div class="course-footer">
+                <span class="course-duration">3 часа</span>
+                <button class="btn btn-sm btn-secondary" disabled>Скоро</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-        <div class="modal" style="position:relative;">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div class="modal-top-bar" id="modal-bar"></div>
-            <div class="modal-body">
-                <div class="modal-title" id="modal-title"></div>
-                <div class="modal-text" id="modal-text"></div>
-                <div class="modal-actions" id="modal-actions"></div>
-            </div>
+    <div
+      class="modal-overlay"
+      id="modal-overlay"
+      onclick="closeModalOutside(event)"
+    >
+      <div class="modal" style="position: relative">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-top-bar" id="modal-bar"></div>
+        <div class="modal-body">
+          <div class="modal-title" id="modal-title"></div>
+          <div class="modal-text" id="modal-text"></div>
+          <div class="modal-actions" id="modal-actions"></div>
         </div>
+      </div>
     </div>
 
     <script src="../script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            if (!currentUser.username) {
-                window.location.href = '../../index.html';
-                return;
-            }
-            document.getElementById('user-name').textContent = currentUser.fullName || currentUser.username;
-            renderMyRequests();
-        });
+      document.addEventListener("DOMContentLoaded", () => {
+        const currentUser = JSON.parse(
+          localStorage.getItem("currentUser") || "{}",
+        );
+        if (!currentUser.username) {
+          window.location.href = "../../index.html";
+          return;
+        }
+        document.getElementById("user-name").textContent =
+          currentUser.fullName || currentUser.username;
+        renderMyRequests();
+      });
     </script>
-</body>
+  </body>
 </html>
