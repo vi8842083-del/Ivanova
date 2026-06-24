@@ -3,197 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оформление заявки - Пассажирам.РФ</title>
+    <title>Регистрация - Пассажирам.РФ</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
 </head>
-<body>
+<body class="auth-page">
 
     <header class="header">
         <div class="header-inner">
             <div class="logo">
-                <i class="fa-solid fa-bus"></i>
                 <span>Пассажирам.РФ</span>
             </div>
             <nav class="nav-links">
-                <a href="dashboard.html">Мои курсы</a>
-                <a href="request.html" class="active">Новая заявка</a>
-                <a href="#" onclick="logout(); return false;">
-                    <i class="fa-solid fa-right-from-bracket"></i> Выход
-                </a>
+                <a href="../../index.html">Вход</a>
+                <a href="register.html" class="active">Регистрация</a>
             </nav>
         </div>
     </header>
 
-    <div class="container page">
-        <div class="request-header animate-fade-in">
-            <h1><i class="fa-solid fa-file-pen"></i> Оформление заявки на обучение</h1>
-            <p class="text-muted">Заполните форму, чтобы записаться на курс</p>
-        </div>
-
-        <div class="request-layout">
-            <!-- Форма заявки -->
-            <div class="request-form-card animate-slide-up">
-                <form id="request-form" onsubmit="event.preventDefault(); createRequest();">
-                    
-                    <!-- Вид транспорта -->
-                    <div class="form-section">
-                        <div class="form-section-title">
-                            <i class="fa-solid fa-bus"></i>
-                            <span>Вид транспорта</span>
-                        </div>
-                        <div class="transport-grid">
-                            <label class="transport-option">
-                                <input type="radio" name="transport" value="Автобус" required>
-                                <div class="transport-card">
-                                    <i class="fa-solid fa-bus"></i>
-                                    <span>Автобус</span>
-                                </div>
-                            </label>
-                            <label class="transport-option">
-                                <input type="radio" name="transport" value="Трамвай">
-                                <div class="transport-card">
-                                    <i class="fa-solid fa-train-tram"></i>
-                                    <span>Трамвай</span>
-                                </div>
-                            </label>
-                            <label class="transport-option">
-                                <input type="radio" name="transport" value="Метро">
-                                <div class="transport-card">
-                                    <i class="fa-solid fa-train-subway"></i>
-                                    <span>Метро</span>
-                                </div>
-                            </label>
-                            <label class="transport-option">
-                                <input type="radio" name="transport" value="Троллейбус">
-                                <div class="transport-card">
-                                    <i class="fa-solid fa-train"></i>
-                                    <span>Троллейбус</span>
-                                </div>
-                            </label>
-                            <label class="transport-option">
-                                <input type="radio" name="transport" value="Такси">
-                                <div class="transport-card">
-                                    <i class="fa-solid fa-taxi"></i>
-                                    <span>Такси</span>
-                                </div>
-                            </label>
-                            <label class="transport-option">
-                                <input type="radio" name="transport" value="Электробус">
-                                <div class="transport-card">
-                                    <i class="fa-solid fa-charging-station"></i>
-                                    <span>Электробус</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Дата начала -->
-                    <div class="form-section">
-                        <div class="form-section-title">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            <span>Дата начала обучения</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="start-date">Выберите удобную дату</label>
-                            <input type="date" id="start-date" class="form-control" required>
-                            <span class="form-hint">
-                                <i class="fa-solid fa-circle-info"></i>
-                                Дата должна быть не раньше завтрашнего дня
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Способ оплаты -->
-                    <div class="form-section">
-                        <div class="form-section-title">
-                            <i class="fa-solid fa-credit-card"></i>
-                            <span>Способ оплаты</span>
-                        </div>
-                        <div class="payment-options">
-                            <label class="payment-option">
-                                <input type="radio" name="payment" value="Банковская карта" required>
-                                <div class="payment-card">
-                                    <i class="fa-solid fa-credit-card"></i>
-                                    <div>
-                                        <strong>Банковская карта</strong>
-                                        <span>Visa, MasterCard, МИР</span>
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="payment-option">
-                                <input type="radio" name="payment" value="Наличные">
-                                <div class="payment-card">
-                                    <i class="fa-solid fa-money-bill-wave"></i>
-                                    <div>
-                                        <strong>Наличные</strong>
-                                        <span>Оплата в офисе</span>
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="payment-option">
-                                <input type="radio" name="payment" value="Онлайн-перевод">
-                                <div class="payment-card">
-                                    <i class="fa-solid fa-building-columns"></i>
-                                    <div>
-                                        <strong>Онлайн-перевод</strong>
-                                        <span>По реквизитам</span>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Кнопки -->
-                    <div class="request-actions">
-                        <a href="dashboard.html" class="btn btn-secondary">
-                            <i class="fa-solid fa-arrow-left"></i> Назад
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa-solid fa-paper-plane"></i> Отправить заявку
-                        </button>
-                    </div>
-                </form>
+    <main class="auth-center">
+        <div class="auth-card animate-fade-in">
+            <div class="auth-illustration">
+                <img src="/assets/img/2.png" alt="Register" class="auth-image">
+                <div class="auth-overlay"></div>
+                <div class="auth-badge">
+                    <span>Присоединяйтесь!</span>
+                </div>
             </div>
 
-            <!-- Инфо-блок справа -->
-            <aside class="request-info animate-slide-up" style="animation-delay: 0.1s">
-                <div class="info-card">
-                    <div class="info-icon">
-                        <i class="fa-solid fa-circle-question"></i>
-                    </div>
-                    <h3>Как это работает?</h3>
-                    <ol class="info-steps">
-                        <li>Заполните форму заявки</li>
-                        <li>Дождитесь подтверждения от администратора</li>
-                        <li>Получите доступ к курсу в назначенную дату</li>
-                        <li>Пройдите обучение и получите сертификат</li>
-                    </ol>
+            <div class="auth-body">
+                <div class="auth-header">
+                    <h1>Создать аккаунт</h1>
+                    <p class="text-muted">Начните обучение прямо сейчас</p>
                 </div>
 
-                <div class="info-card highlight">
-                    <div class="info-icon">
-                        <i class="fa-solid fa-phone"></i>
+                <form id="register-form" onsubmit="event.preventDefault(); registerUser();">
+                    <div class="form-group">
+                        <label for="reg-fullname">ФИО</label>
+                        <input type="text" id="reg-fullname" class="form-control" placeholder="Иванов Иван Иванович" required>
                     </div>
-                    <h3>Нужна помощь?</h3>
-                    <p class="text-muted" style="margin-bottom: 10px;">Свяжитесь с нами:</p>
-                    <p><i class="fa-solid fa-phone"></i> 8 (800) 555-35-35</p>
-                    <p><i class="fa-solid fa-envelope"></i> info@passazhiram.ru</p>
+
+                    <div class="form-group">
+                        <label for="reg-username">Логин</label>
+                        <input type="text" id="reg-username" class="form-control" placeholder="Придумайте логин" required>
+                        <span id="reg-user-error" class="error-text hidden"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Пароль</label>
+                        <div class="password-input">
+                            <input type="password" id="reg-password" class="form-control" placeholder="Минимум 6 символов" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword('reg-password', this)">
+                                👁
+                            </button>
+                        </div>
+                        <span id="reg-pass-error" class="error-text hidden"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password2">Повторите пароль</label>
+                        <input type="password" id="reg-password2" class="form-control" placeholder="Повторите пароль" required>
+                        <span id="reg-pass2-error" class="error-text hidden"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-primary animate-pulse-hover">
+                        Зарегистрироваться
+                    </button>
+                </form>
+
+                <div class="auth-divider">
+                    <span>или</span>
                 </div>
-            </aside>
+
+                <a href="../../index.html" class="btn btn-block btn-outline animate-pulse-hover">
+                    Уже есть аккаунт
+                </a>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Модальное окно -->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
         <div class="modal" style="position:relative;">
-            <button class="modal-close" onclick="closeModal()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <button class="modal-close" onclick="closeModal()">✕</button>
             <div class="modal-top-bar" id="modal-bar"></div>
             <div class="modal-body">
-                <div class="modal-icon" id="modal-icon"></div>
                 <div class="modal-title" id="modal-title"></div>
                 <div class="modal-text" id="modal-text"></div>
                 <div class="modal-actions" id="modal-actions"></div>
@@ -202,18 +95,5 @@
     </div>
 
     <script src="../script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            if (!currentUser.username) {
-                window.location.href = '../../index.html';
-                return;
-            }
-            // Минимальная дата — завтра
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('start-date').min = tomorrow.toISOString().split('T')[0];
-        });
-    </script>
 </body>
 </html>

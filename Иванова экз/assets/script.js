@@ -44,28 +44,16 @@ function checkAutoLogin() {
     }
 }
 
-// ===== РАБОТА С ПОЛЬЗОВАТЕЛЯМИ =====
+// ===== РАБОТА С ДАННЫМИ =====
 function getUsers() {
     return JSON.parse(localStorage.getItem('users') || '[]');
 }
-
-// ===== РАБОТА С ЗАЯВКАМИ =====
 function getRequests() {
     return JSON.parse(localStorage.getItem('requests') || '[]');
 }
 function saveRequests(requests) {
     localStorage.setItem('requests', JSON.stringify(requests));
 }
-
-// Иконки для видов транспорта
-const transportIcons = {
-    'Автобус':     'fa-solid fa-bus',
-    'Трамвай':     'fa-solid fa-train-tram',
-    'Метро':       'fa-solid fa-train-subway',
-    'Троллейбус':  'fa-solid fa-train',
-    'Такси':       'fa-solid fa-taxi',
-    'Электробус':  'fa-solid fa-charging-station'
-};
 
 // =========================================================
 // АВТОРИЗАЦИЯ
@@ -81,12 +69,12 @@ function loginUser() {
     passErr.classList.add('hidden');
 
     if (!username) {
-        userErr.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Введите логин';
+        userErr.innerHTML = 'Введите логин';
         userErr.classList.remove('hidden');
         return;
     }
     if (!password) {
-        passErr.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Введите пароль';
+        passErr.innerHTML = 'Введите пароль';
         passErr.classList.remove('hidden');
         return;
     }
@@ -95,12 +83,12 @@ function loginUser() {
     const user = users.find(u => u.username === username);
 
     if (!user) {
-        userErr.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Пользователь не найден';
+        userErr.innerHTML = 'Пользователь не найден';
         userErr.classList.remove('hidden');
         return;
     }
     if (user.password !== password) {
-        passErr.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Неверный пароль';
+        passErr.innerHTML = 'Неверный пароль';
         passErr.classList.remove('hidden');
         return;
     }
@@ -146,24 +134,24 @@ function registerUser() {
         return;
     }
     if (!username || username.length < 3) {
-        userErr.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Логин минимум 3 символа';
+        userErr.innerHTML = 'Логин минимум 3 символа';
         userErr.classList.remove('hidden');
         return;
     }
     if (!password || password.length < 6) {
-        passErr.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Пароль минимум 6 символов';
+        passErr.innerHTML = 'Пароль минимум 6 символов';
         passErr.classList.remove('hidden');
         return;
     }
     if (password !== password2) {
-        pass2Err.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Пароли не совпадают';
+        pass2Err.innerHTML = 'Пароли не совпадают';
         pass2Err.classList.remove('hidden');
         return;
     }
 
     const users = getUsers();
     if (users.some(u => u.username === username)) {
-        userErr.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Этот логин уже занят';
+        userErr.innerHTML = 'Этот логин уже занят';
         userErr.classList.remove('hidden');
         return;
     }
@@ -205,7 +193,7 @@ function logout() {
 }
 
 // =========================================================
-// ЗАЯВКИ — СОЗДАНИЕ
+// СОЗДАНИЕ ЗАЯВКИ
 // =========================================================
 
 function createRequest() {
@@ -232,7 +220,6 @@ function createRequest() {
         return;
     }
 
-    // Проверка даты
     const selectedDate = new Date(dateEl.value);
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -261,14 +248,23 @@ function createRequest() {
     showModal({
         type: 'success',
         title: 'Заявка отправлена!',
-        text: 'Ваша заявка успешно создана. Ожидайте подтверждения администратора.',
-        confirmText: 'В личный кабинет',
-        onConfirm: () => { window.location.href = 'dashboard.html'; }
+        text: 'Ваша заявка успешно создана.<br>Номер заявки: <strong>№' + newRequest.id + '</strong><br><br>Ожидайте подтверждения администратора.',
+        confirmText: 'Перейти в кабинет',
+        onConfirm: () => {
+            window.location.href = 'dashboard.html';
+        }
     });
+
+    setTimeout(() => {
+        const overlay = document.getElementById('modal-overlay');
+        if (overlay && overlay.classList.contains('active')) {
+            window.location.href = 'dashboard.html';
+        }
+    }, 5000);
 }
 
 // =========================================================
-// ЗАЯВКИ — В КАБИНЕТЕ ПОЛЬЗОВАТЕЛЯ
+// ЗАЯВКИ В КАБИНЕТЕ
 // =========================================================
 
 function renderMyRequests() {
@@ -277,26 +273,27 @@ function renderMyRequests() {
 
     const requests = getRequests().filter(r => r.userId === currentUser.username);
     const list = document.getElementById('my-requests-list');
+    if (!list) return;
 
-    // Обновляем статистику
-    document.getElementById('total-requests').textContent = requests.length;
-    document.getElementById('active-requests').textContent = requests.filter(r => r.status === 'Новая' || r.status === 'В обработке').length;
-    document.getElementById('completed-requests').textContent = requests.filter(r => r.status === 'Завершена').length;
+    const totalEl = document.getElementById('total-requests');
+    const activeEl = document.getElementById('active-requests');
+    const completedEl = document.getElementById('completed-requests');
+    if (totalEl) totalEl.textContent = requests.length;
+    if (activeEl) activeEl.textContent = requests.filter(r => r.status === 'Новая' || r.status === 'В обработке').length;
+    if (completedEl) completedEl.textContent = requests.filter(r => r.status === 'Завершена').length;
 
     if (requests.length === 0) {
         list.innerHTML = `
             <div class="empty-state animate-fade-in">
-                <i class="fa-solid fa-inbox"></i>
                 <p>У вас пока нет заявок</p>
                 <a href="request.html" class="btn btn-primary" style="margin-top: 14px;">
-                    <i class="fa-solid fa-plus"></i> Создать первую заявку
+                    Создать первую заявку
                 </a>
             </div>
         `;
         return;
     }
 
-    // Сортировка: новые сверху
     requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     list.innerHTML = '<div class="requests-grid">' + requests.map(r => {
@@ -304,12 +301,10 @@ function renderMyRequests() {
                           : r.status === 'В обработке' ? 'status-process'
                           : r.status === 'Завершена' ? 'status-done'
                           : 'status-cancel';
-        const icon = transportIcons[r.transport] || 'fa-solid fa-bus';
         const dateFormatted = new Date(r.startDate).toLocaleDateString('ru-RU', {
             day: '2-digit', month: 'long', year: 'numeric'
         });
 
-        // Форма отзыва — только если статус "Завершена" и отзыва ещё нет
         let reviewBlock = '';
         if (r.status === 'Завершена' && !r.review) {
             reviewBlock = `
@@ -317,7 +312,7 @@ function renderMyRequests() {
                     <textarea id="review-${r.id}" placeholder="Поделитесь впечатлениями о обучении..."></textarea>
                     <div class="review-actions">
                         <button class="btn btn-sm btn-primary" onclick="submitReview(${r.id})">
-                            <i class="fa-solid fa-paper-plane"></i> Отправить отзыв
+                            Отправить отзыв
                         </button>
                     </div>
                 </div>
@@ -325,7 +320,7 @@ function renderMyRequests() {
         } else if (r.review) {
             reviewBlock = `
                 <div class="review-display">
-                    <strong><i class="fa-solid fa-comment"></i> Ваш отзыв:</strong>
+                    <strong>Ваш отзыв:</strong>
                     ${r.review}
                 </div>
             `;
@@ -334,11 +329,8 @@ function renderMyRequests() {
         return `
             <div class="request-card animate-slide-up">
                 <div class="request-card-header">
-                    <div class="request-transport-icon"><i class="${icon}"></i></div>
-                    <div>
-                        <h4>${r.transport}</h4>
-                        <small>Заявка №${r.id}</small>
-                    </div>
+                    <h4>${r.transport}</h4>
+                    <small>Заявка №${r.id}</small>
                 </div>
                 <div class="request-details">
                     <div class="request-detail">
@@ -352,7 +344,6 @@ function renderMyRequests() {
                 </div>
                 <div>
                     <span class="request-status ${statusClass}">
-                        <i class="fa-solid fa-circle" style="font-size: 6px;"></i>
                         ${r.status}
                     </span>
                 </div>
@@ -390,19 +381,23 @@ function submitReview(requestId) {
     showModal({
         type: 'success',
         title: 'Спасибо за отзыв!',
-        text: 'Ваше мнение очень важно для нас 🙏',
+        text: 'Ваше мнение очень важно для нас',
         onConfirm: () => { renderMyRequests(); }
     });
 }
 
 // =========================================================
-// ЗАЯВКИ — В АДМИНКЕ
+// ЗАЯВКИ В АДМИНКЕ
 // =========================================================
 
 function renderAdminRequests() {
     const requests = getRequests();
-    const search = document.getElementById('search-request').value.toLowerCase();
-    const statusFilter = document.getElementById('filter-status').value;
+    const searchEl = document.getElementById('search-request');
+    const statusEl = document.getElementById('filter-status');
+    if (!searchEl || !statusEl) return;
+
+    const search = searchEl.value.toLowerCase();
+    const statusFilter = statusEl.value;
 
     const filtered = requests.filter(r => {
         const matchSearch = r.userName.toLowerCase().includes(search) ||
@@ -413,15 +408,16 @@ function renderAdminRequests() {
     });
 
     const list = document.getElementById('admin-requests-list');
+    if (!list) return;
+
     if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state animate-fade-in"><i class="fa-solid fa-inbox"></i><p>Заявки не найдены</p></div>';
+        list.innerHTML = '<div class="empty-state animate-fade-in"><p>Заявки не найдены</p></div>';
         return;
     }
 
     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     list.innerHTML = filtered.map(r => {
-        const icon = transportIcons[r.transport] || 'fa-solid fa-bus';
         const dateFormatted = new Date(r.startDate).toLocaleDateString('ru-RU', {
             day: '2-digit', month: 'long', year: 'numeric'
         });
@@ -431,7 +427,7 @@ function renderAdminRequests() {
         if (r.review) {
             reviewBlock = `
                 <div class="review-admin-display">
-                    <strong><i class="fa-solid fa-comment"></i> Отзыв от ${new Date(r.reviewDate).toLocaleDateString('ru-RU')}:</strong>
+                    <strong>Отзыв от ${new Date(r.reviewDate).toLocaleDateString('ru-RU')}:</strong>
                     ${r.review}
                 </div>
             `;
@@ -439,24 +435,23 @@ function renderAdminRequests() {
 
         return `
             <div class="admin-request-card animate-slide-up">
-                <div class="request-transport-icon"><i class="${icon}"></i></div>
                 <div class="admin-request-info">
                     <h4>${r.userName} — ${r.transport}</h4>
                     <div class="admin-request-meta">
-                        <span><i class="fa-solid fa-calendar"></i> Начало: ${dateFormatted}</span>
-                        <span><i class="fa-solid fa-credit-card"></i> ${r.payment}</span>
-                        <span><i class="fa-solid fa-clock"></i> Создана: ${createdFormatted}</span>
+                        <span>Начало: ${dateFormatted}</span>
+                        <span>${r.payment}</span>
+                        <span>Создана: ${createdFormatted}</span>
                     </div>
                 </div>
                 <div class="admin-request-actions">
                     <select class="status-select" onchange="updateRequestStatus(${r.id}, this.value)">
-                        <option value="Новая" ${r.status === 'Новая' ? 'selected' : ''}>🟡 Новая</option>
-                        <option value="В обработке" ${r.status === 'В обработке' ? 'selected' : ''}>🔵 В обработке</option>
-                        <option value="Завершена" ${r.status === 'Завершена' ? 'selected' : ''}>🟢 Завершена</option>
-                        <option value="Отменена" ${r.status === 'Отменена' ? 'selected' : ''}>🔴 Отменена</option>
+                        <option value="Новая" ${r.status === 'Новая' ? 'selected' : ''}>Новая</option>
+                        <option value="В обработке" ${r.status === 'В обработке' ? 'selected' : ''}>В обработке</option>
+                        <option value="Завершена" ${r.status === 'Завершена' ? 'selected' : ''}>Завершена</option>
+                        <option value="Отменена" ${r.status === 'Отменена' ? 'selected' : ''}>Отменена</option>
                     </select>
                     <button class="btn btn-sm btn-danger-outline" onclick="deleteRequest(${r.id})">
-                        <i class="fa-solid fa-trash"></i>
+                        Удалить
                     </button>
                 </div>
                 ${reviewBlock}
@@ -470,7 +465,6 @@ function updateRequestStatus(requestId, newStatus) {
     const request = requests.find(r => r.id === requestId);
     if (!request) return;
 
-    const oldStatus = request.status;
     request.status = newStatus;
     saveRequests(requests);
 
@@ -489,10 +483,7 @@ function updateRequestStatus(requestId, newStatus) {
             text: msg.text,
             onConfirm: () => {
                 renderAdminRequests();
-                // Обновляем статистику
-                const requests = getRequests();
-                document.getElementById('total-requests').textContent = requests.length;
-                document.getElementById('pending-requests').textContent = requests.filter(r => r.status === 'Новая').length;
+                updateAdminStats();
             }
         });
     }
@@ -510,12 +501,21 @@ function deleteRequest(requestId) {
             requests = requests.filter(r => r.id !== requestId);
             saveRequests(requests);
             renderAdminRequests();
-            const requestsNew = getRequests();
-            document.getElementById('total-requests').textContent = requestsNew.length;
-            document.getElementById('pending-requests').textContent = requestsNew.filter(r => r.status === 'Новая').length;
+            updateAdminStats();
             showModal({ type: 'success', title: 'Удалено', text: 'Заявка успешно удалена' });
         }
     });
+}
+
+function updateAdminStats() {
+    const users = getUsers();
+    const requests = getRequests();
+    const totalUsersEl = document.getElementById('total-users');
+    const totalRequestsEl = document.getElementById('total-requests');
+    const pendingEl = document.getElementById('pending-requests');
+    if (totalUsersEl) totalUsersEl.textContent = users.length;
+    if (totalRequestsEl) totalRequestsEl.textContent = requests.length;
+    if (pendingEl) pendingEl.textContent = requests.filter(r => r.status === 'Новая').length;
 }
 
 // =========================================================
@@ -524,15 +524,12 @@ function deleteRequest(requestId) {
 
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId);
-    const icon = btn.querySelector('i');
     if (input.type === 'password') {
         input.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+        btn.textContent = '🔒';
     } else {
         input.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        btn.textContent = '👁';
     }
 }
 
@@ -549,23 +546,12 @@ function showModal(options) {
     }
 
     const bar = document.getElementById('modal-bar');
-    const icon = document.getElementById('modal-icon');
     const title = document.getElementById('modal-title');
     const text = document.getElementById('modal-text');
     const actions = document.getElementById('modal-actions');
 
-    const icons = {
-        info:    'fa-solid fa-circle-info',
-        success: 'fa-solid fa-circle-check',
-        error:   'fa-solid fa-circle-xmark',
-        warning: 'fa-solid fa-triangle-exclamation',
-        confirm: 'fa-solid fa-circle-question'
-    };
-
     const type = options.type || 'info';
     bar.className = 'modal-top-bar ' + type;
-    icon.className = 'modal-icon ' + type;
-    icon.innerHTML = '<i class="' + icons[type] + '"></i>';
     title.textContent = options.title || '';
     text.innerHTML = options.text || '';
     actions.innerHTML = '';
@@ -573,7 +559,7 @@ function showModal(options) {
     if (type === 'confirm') {
         const cancelBtn = document.createElement('button');
         cancelBtn.className = 'btn btn-secondary';
-        cancelBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> ' + (options.cancelText || 'Отмена');
+        cancelBtn.innerHTML = options.cancelText || 'Отмена';
         cancelBtn.onclick = () => {
             closeModal();
             if (options.onCancel) options.onCancel();
@@ -581,7 +567,7 @@ function showModal(options) {
 
         const confirmBtn = document.createElement('button');
         confirmBtn.className = 'btn btn-danger';
-        confirmBtn.innerHTML = '<i class="fa-solid fa-check"></i> ' + (options.confirmText || 'Подтвердить');
+        confirmBtn.innerHTML = options.confirmText || 'Подтвердить';
         confirmBtn.onclick = () => {
             closeModal();
             if (options.onConfirm) options.onConfirm();
@@ -596,7 +582,7 @@ function showModal(options) {
                        : type === 'warning' ? 'btn btn-warning'
                        : 'btn';
         okBtn.className = btnClass;
-        okBtn.innerHTML = '<i class="fa-solid fa-check"></i> ОК';
+        okBtn.innerHTML = options.confirmText || 'ОК';
         okBtn.onclick = () => {
             closeModal();
             if (options.onConfirm) options.onConfirm();
@@ -620,14 +606,14 @@ function closeModalOutside(e) {
 }
 
 // =========================================================
-// ЗАГЛУШКИ ДЛЯ КУРСОВ
+// КУРСЫ (заглушки)
 // =========================================================
 
 function startCourse(id) {
     showModal({
         type: 'success',
         title: 'Курс начат!',
-        text: 'Желаем успехов в обучении! 🚀',
+        text: 'Желаем успехов в обучении!',
         onConfirm: () => {}
     });
 }

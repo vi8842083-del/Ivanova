@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Новая заявка - Пассажирам.РФ</title>
+    <title>Оформление заявки - Пассажирам.РФ</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -13,83 +12,177 @@
     <header class="header">
         <div class="header-inner">
             <div class="logo">
-                <i class="fa-solid fa-bus"></i>
                 <span>Пассажирам.РФ</span>
             </div>
             <nav class="nav-links">
                 <a href="dashboard.html">Мои курсы</a>
-                <a href="#" onclick="logout(); return false;">
-                    <i class="fa-solid fa-right-from-bracket"></i> Выход
-                </a>
+                <a href="request.html" class="active">Новая заявка</a>
+                <a href="#" onclick="logout(); return false;">Выход</a>
             </nav>
         </div>
     </header>
 
     <div class="container page">
-        <div class="auth-center">
-            <div class="auth-card animate-fade-in">
-                <div class="auth-illustration">
-                    <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=400&h=200&fit=crop" alt="Request" class="auth-image">
-                    <div class="auth-overlay"></div>
-                    <div class="auth-badge">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        <span>Новая заявка</span>
+        <div class="request-header animate-fade-in">
+            <h1>Оформление заявки на обучение</h1>
+            <p class="text-muted">Заполните форму, чтобы записаться на курс</p>
+        </div>
+
+        <div class="request-layout">
+            <div class="request-form-card animate-slide-up">
+                <form id="request-form" onsubmit="event.preventDefault(); createRequest();">
+                    
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <span>Вид транспорта</span>
+                        </div>
+                        <div class="transport-grid">
+                            <label class="transport-option">
+                                <input type="radio" name="transport" value="Автобус" required>
+                                <div class="transport-card">
+                                    <span>Автобус</span>
+                                </div>
+                            </label>
+                            <label class="transport-option">
+                                <input type="radio" name="transport" value="Трамвай">
+                                <div class="transport-card">
+                                    <span>Трамвай</span>
+                                </div>
+                            </label>
+                            <label class="transport-option">
+                                <input type="radio" name="transport" value="Метро">
+                                <div class="transport-card">
+                                    <span>Метро</span>
+                                </div>
+                            </label>
+                            <label class="transport-option">
+                                <input type="radio" name="transport" value="Троллейбус">
+                                <div class="transport-card">
+                                    <span>Троллейбус</span>
+                                </div>
+                            </label>
+                            <label class="transport-option">
+                                <input type="radio" name="transport" value="Такси">
+                                <div class="transport-card">
+                                    <span>Такси</span>
+                                </div>
+                            </label>
+                            <label class="transport-option">
+                                <input type="radio" name="transport" value="Электробус">
+                                <div class="transport-card">
+                                    <span>Электробус</span>
+                                </div>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="auth-body">
-                    <div class="auth-header">
-                        <h1>Оформление заявки</h1>
-                        <p class="text-muted">Заполните форму для начала обучения</p>
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <span>Дата начала обучения</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="start-date">Выберите удобную дату</label>
+                            <input type="date" id="start-date" class="form-control" required>
+                            <span class="form-hint">
+                                Дата должна быть не раньше завтрашнего дня
+                            </span>
+                        </div>
                     </div>
 
-                    <form id="request-form" onsubmit="event.preventDefault(); submitRequest();">
-                        <div class="form-group">
-                            <label for="req-transport">
-                                <i class="fa-solid fa-bus"></i> Вид транспорта
-                            </label>
-                            <select id="req-transport" class="form-control">
-                                <option value="Автобус">Автобус</option>
-                                <option value="Электробус">Электробус</option>
-                                <option value="Трамвай">Трамвай</option>
-                            </select>
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <span>Способ оплаты</span>
                         </div>
-
-                        <div class="form-group">
-                            <label for="req-date">
-                                <i class="fa-solid fa-calendar"></i> Дата начала обучения
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="Банковская карта" required>
+                                <div class="payment-card">
+                                    <div>
+                                        <strong>Банковская карта</strong>
+                                        <span>Visa, MasterCard, МИР</span>
+                                    </div>
+                                </div>
                             </label>
-                            <input type="date" id="req-date" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="req-payment">
-                                <i class="fa-solid fa-credit-card"></i> Способ оплаты
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="Наличные">
+                                <div class="payment-card">
+                                    <div>
+                                        <strong>Наличные</strong>
+                                        <span>Оплата в офисе</span>
+                                    </div>
+                                </div>
                             </label>
-                            <select id="req-payment" class="form-control">
-                                <option value="Предоплата по QR-коду">Предоплата по QR-коду</option>
-                                <option value="Оплата картой МИР">Оплата картой МИР</option>
-                                <option value="Постоплата в офисе">Постоплата в офисе</option>
-                            </select>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="Онлайн-перевод">
+                                <div class="payment-card">
+                                    <div>
+                                        <strong>Онлайн-перевод</strong>
+                                        <span>По реквизитам</span>
+                                    </div>
+                                </div>
+                            </label>
                         </div>
+                    </div>
 
-                        <button type="submit" class="btn btn-block btn-primary animate-pulse-hover">
-                            <i class="fa-solid fa-paper-plane"></i> Отправить заявку
+                    <div class="request-actions">
+                        <a href="dashboard.html" class="btn btn-secondary">
+                            Назад
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            Отправить заявку
                         </button>
-                    </form>
-
-                    <div class="auth-divider">
-                        <span>или</span>
                     </div>
+                </form>
+            </div>
 
-                    <a href="dashboard.html" class="btn btn-block btn-outline">
-                        <i class="fa-solid fa-arrow-left"></i> Вернуться в кабинет
-                    </a>
+            <aside class="request-info animate-slide-up" style="animation-delay: 0.1s">
+                <div class="info-card">
+                  <aside class="request-info">
+        <img src="/assets/img/4.jpg" alt="Инфо" style="width:100%; border-radius:10px; margin-bottom:12px;">
+       
+                    <h3>Как это работает?</h3>
+                    <ol class="info-steps">
+                        <li>Заполните форму заявки</li>
+                        <li>Дождитесь подтверждения от администратора</li>
+                        <li>Получите доступ к курсу в назначенную дату</li>
+                        <li>Пройдите обучение и получите сертификат</li>
+                    </ol>
                 </div>
+
+                <div class="info-card highlight">
+                    <h3>Нужна помощь?</h3>
+                    <p class="text-muted" style="margin-bottom: 10px;">Свяжитесь с нами:</p>
+                    <p>8 (800) 555-35-35</p>
+                    <p>info@passazhiram.ru</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+        <div class="modal" style="position:relative;">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-top-bar" id="modal-bar"></div>
+            <div class="modal-body">
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-text" id="modal-text"></div>
+                <div class="modal-actions" id="modal-actions"></div>
             </div>
         </div>
     </div>
 
-    <script src="../../script.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!currentUser.username) {
+                window.location.href = '../../index.html';
+                return;
+            }
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('start-date').min = tomorrow.toISOString().split('T')[0];
+        });
+    </script>
 </body>
 </html>
