@@ -28,55 +28,77 @@
     <div class="container page">
         <div class="admin-header animate-fade-in">
             <h1><i class="fa-solid fa-shield-halved"></i> Панель администратора</h1>
-            <p class="text-muted">Управление пользователями и курсами</p>
+            <p class="text-muted">Управление пользователями и заявками</p>
         </div>
 
         <!-- Статистика -->
         <div class="admin-stats">
             <div class="admin-stat-card animate-slide-up" style="animation-delay: 0.1s">
-                <div class="stat-icon blue">
-                    <i class="fa-solid fa-users"></i>
-                </div>
+                <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
                 <div class="stat-content">
                     <span class="stat-number" id="total-users">0</span>
                     <span class="stat-label">Пользователей</span>
                 </div>
             </div>
             <div class="admin-stat-card animate-slide-up" style="animation-delay: 0.2s">
-                <div class="stat-icon green">
-                    <i class="fa-solid fa-user-graduate"></i>
-                </div>
+                <div class="stat-icon green"><i class="fa-solid fa-file-lines"></i></div>
                 <div class="stat-content">
-                    <span class="stat-number" id="total-students">0</span>
-                    <span class="stat-label">Студентов</span>
+                    <span class="stat-number" id="total-requests">0</span>
+                    <span class="stat-label">Заявок</span>
                 </div>
             </div>
             <div class="admin-stat-card animate-slide-up" style="animation-delay: 0.3s">
-                <div class="stat-icon purple">
-                    <i class="fa-solid fa-book"></i>
-                </div>
+                <div class="stat-icon purple"><i class="fa-solid fa-spinner"></i></div>
                 <div class="stat-content">
-                    <span class="stat-number">5</span>
-                    <span class="stat-label">Курсов</span>
+                    <span class="stat-number" id="pending-requests">0</span>
+                    <span class="stat-label">Ожидают обработки</span>
                 </div>
             </div>
         </div>
 
-        <!-- Фильтры -->
-        <div class="admin-filters animate-fade-in">
-            <div class="search-box">
-                <i class="fa-solid fa-search"></i>
-                <input type="text" id="search-user" placeholder="Поиск по логину или ФИО..." oninput="renderUsers()">
-            </div>
-            <select id="filter-role" onchange="renderUsers()">
-                <option value="">Все роли</option>
-                <option value="student">Студенты</option>
-                <option value="admin">Админы</option>
-            </select>
+        <!-- Вкладки -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" onclick="switchTab('requests', this)">
+                <i class="fa-solid fa-file-lines"></i> Заявки
+            </button>
+            <button class="admin-tab" onclick="switchTab('users', this)">
+                <i class="fa-solid fa-users"></i> Пользователи
+            </button>
         </div>
 
-        <!-- Список пользователей -->
-        <div class="users-list" id="users-list"></div>
+        <!-- Вкладка: Заявки -->
+        <div id="tab-requests" class="admin-tab-content">
+            <div class="admin-filters animate-fade-in">
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="search-request" placeholder="Поиск по пользователю или транспорту..." oninput="renderAdminRequests()">
+                </div>
+                <select id="filter-status" onchange="renderAdminRequests()">
+                    <option value="">Все статусы</option>
+                    <option value="Новая">Новые</option>
+                    <option value="В обработке">В обработке</option>
+                    <option value="Завершена">Завершённые</option>
+                    <option value="Отменена">Отменённые</option>
+                </select>
+            </div>
+            <div id="admin-requests-list"></div>
+        </div>
+
+        <!-- Вкладка: Пользователи -->
+        <div id="tab-users" class="admin-tab-content hidden">
+            <div class="admin-filters animate-fade-in">
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="search-user" placeholder="Поиск по логину или ФИО..." oninput="renderUsers()">
+                </div>
+                <select id="filter-role" onchange="renderUsers()">
+                    <option value="">Все роли</option>
+                    <option value="student">Студенты</option>
+                    <option value="admin">Админы</option>
+                </select>
+            </div>
+            <div class="users-list" id="users-list"></div>
+        </div>
     </div>
 
     <!-- Модальное окно -->
@@ -104,20 +126,28 @@
                     type: 'error',
                     title: 'Доступ запрещён',
                     text: 'У вас нет прав для просмотра этой страницы',
-                    onConfirm: () => {
-                        window.location.href = '../../index.html';
-                    }
+                    onConfirm: () => { window.location.href = '../../index.html'; }
                 });
                 return;
             }
+            renderAdminRequests();
             renderUsers();
             updateStats();
         });
 
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-requests').classList.toggle('hidden', tab !== 'requests');
+            document.getElementById('tab-users').classList.toggle('hidden', tab !== 'users');
+        }
+
         function updateStats() {
             const users = getUsers();
+            const requests = getRequests();
             document.getElementById('total-users').textContent = users.length;
-            document.getElementById('total-students').textContent = users.filter(u => u.role === 'student').length;
+            document.getElementById('total-requests').textContent = requests.length;
+            document.getElementById('pending-requests').textContent = requests.filter(r => r.status === 'Новая').length;
         }
 
         function renderUsers() {
@@ -140,9 +170,7 @@
 
             list.innerHTML = '<div class="users-grid">' + filtered.map(u => `
                 <div class="user-card animate-slide-up">
-                    <div class="user-avatar">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
+                    <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
                     <div class="user-info">
                         <h4>${u.fullName || u.username}</h4>
                         <p class="text-muted">@${u.username}</p>
@@ -175,11 +203,7 @@
                     localStorage.setItem('users', JSON.stringify(users));
                     renderUsers();
                     updateStats();
-                    showModal({
-                        type: 'success',
-                        title: 'Удалено',
-                        text: 'Пользователь успешно удалён'
-                    });
+                    showModal({ type: 'success', title: 'Удалено', text: 'Пользователь успешно удалён' });
                 }
             });
         }
